@@ -1,0 +1,118 @@
+int mainTableDiameter = 600;
+int bowlDiameter = 30;
+float reflectiveAngle = 0;
+float textSpeed = 0.25;
+
+float arrowAngle = 0;
+
+PShape tempSvg;
+PShape arrowSvg;
+
+ArrayList<PShape> factArray = new ArrayList<PShape>();
+
+//user inputs stuff, stuff gets stored as an object, object gets pushed into an array
+// for testing purposes with temporary data, we will store into an array that's prepped already
+ArrayList<UserMedia> fakeData = new ArrayList<UserMedia>();
+
+// Bowl positions
+FoodBowl bowl1, bowl2, bowl3, bowl4;
+
+//Turntable
+Table table;
+
+void setup() {
+    size(800, 800); // Adjust canvas size as needed
+    background(0);
+    tempSvg = loadShape("./data/fillertextTemp.svg");
+    arrowSvg = loadShape("./data/arrow.svg");
+
+    //temp factarray
+    factArray.add(tempSvg);
+
+    //temp fakeData array
+    //we need to develop a way to track bowl coordinate based on accelerometer
+    //fakeData.add(new UserMedia("test quote I have a lot of reflective thoughts",  ))
+    float bowl_x_1 = width / 2 + ((mainTableDiameter / 4) / 2) * cos(radians(45));
+    float bowl_y_1 = height / 2 + ((mainTableDiameter / 4) / 2) * sin(radians(45));
+
+    float bowl_x_2 = width / 2 + ((mainTableDiameter / 4) / 2) * cos(radians(135));
+    float bowl_y_2 = height / 2 + ((mainTableDiameter / 4) / 2) * sin(radians(135));
+
+    float bowl_x_3 = width / 2 + ((mainTableDiameter / 4) / 2) * cos(radians(225));
+    float bowl_y_3 = height / 2 + ((mainTableDiameter / 4) / 2) * sin(radians(225));
+
+    float bowl_x_4 = width / 2 + ((mainTableDiameter / 4) / 2) * cos(radians(315));
+    float bowl_y_4 = height / 2 + ((mainTableDiameter / 4) / 2) * sin(radians(315));
+
+    // Initialize bowls with empty text
+    bowl1 = new FoodBowl("1", factArray.get(0), bowl_x_1, bowl_y_1, textSpeed);
+    bowl2 = new FoodBowl("2", factArray.get(0), bowl_x_2, bowl_y_2, -textSpeed);
+    bowl3 = new FoodBowl("3", factArray.get(0), bowl_x_3, bowl_y_3, textSpeed);
+    bowl4 = new FoodBowl("4", factArray.get(0), bowl_x_4, bowl_y_4, -textSpeed);
+
+    bowl1.displayCircle();
+    bowl2.displayCircle();
+    bowl3.displayCircle();
+    bowl4.displayCircle();
+
+    // Initialize Turntable
+    table = new Table(width/2, height/2, mainTableDiameter);
+}
+
+void draw() {
+    background(0); // Clears previous frames to prevent ghosting effects
+    //arrowsvg
+     // Calculate the rotation angle based on mouse position
+    arrowAngle = atan2(mouseY - height / 2, mouseX - width / 2);
+    
+  
+    // Display angle text
+    fill(255);
+    textSize(20);
+    text("Angle: " + degrees(arrowAngle) + "°", 10, 30);
+
+
+    //if user data exists, push it into the table class media array
+
+    // Redraw main table
+    noStroke();
+    table.display();
+
+    // Redraw turntable
+    fill(245, 245, 220);
+    ellipse(width/2, width/2, mainTableDiameter/2, mainTableDiameter/2);
+
+    //   technically works but will replace with new svg and adjust coordinates
+    // rotating reflective question
+    //pushMatrix(); // Save the current transformation state
+    //translate(width/2, height/2); // Move origin to turntable position
+    //rotate(radians(reflectiveAngle)); // Apply rotation
+    //shape(tempSvg, -60, -50, 100, 100); // Draw SVG relative to the new origin
+    //popMatrix(); // Restore transformation state
+    //reflectiveAngle += (textSpeed); // Increase angle for animation
+
+
+    bowl1.displayCircle();
+    bowl2.displayCircle();
+    bowl3.displayCircle();
+    bowl4.displayCircle();
+    
+    bowl1.displayBowlNumber();
+    bowl2.displayBowlNumber();
+    bowl3.displayBowlNumber();
+    bowl4.displayBowlNumber();
+    
+    bowl1.rotateText();
+    bowl2.rotateText();
+    bowl3.rotateText();
+    bowl4.rotateText();
+
+    pushMatrix(); // Save the current transformation state
+    translate(width/2, height/2); // Move origin to bowl position
+    rotate(arrowAngle); // Apply rotation
+    shape(arrowSvg, 0, 0, 10, 10); // Draw SVG relative to the new origin
+    popMatrix(); 
+  
+
+
+}

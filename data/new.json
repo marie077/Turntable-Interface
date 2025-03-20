@@ -1,0 +1,24 @@
+{
+  "user1": {
+    "illustrations": "Goat",
+    "photo": "photo1",
+    "mad-lib": "test text mad-lib response"
+  },
+  "user2":
+  {
+    "illustrations": "Leopard",
+    "photo": "photo2",
+    "mad-lib": "test text mad-lib response 2"
+  },
+  "user3":
+  {
+    "illustrations": "Zebra",
+    "photo": "photo3",
+    "mad-lib": "test text mad-lib response 3"
+  },
+  "user4": {
+    "illustrations": "cat",
+    "photo": "photo4",
+    "mad-lib": "test text mad-lib response 4"
+  }
+}
