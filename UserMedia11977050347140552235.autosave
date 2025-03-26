@@ -1,0 +1,87 @@
+//class to control each User Inputted Media such as mad-lib, illustrations (images), images
+class UserMedia {
+    PImage media;
+    // PImage image; //either image of illustration or personal photo
+    float x, y;
+    float alpha = 0;
+    float angle = 0;
+    float amplitude = 0.25;
+    float speed = 0.04;
+    //text-input
+    UserMedia(String text) {
+        this.media = loadImage(text);
+    }
+    
+    //image-input
+    // UserMedia(PImage image) {
+    //     this.image = image;
+    //     this.madLib = null;
+    // }
+
+    // // Override toString() to return meaningful output
+    // @Override
+    // public String toString() {
+    //     return this.content;  // Now thisit prints the actual content!
+    // }
+
+
+    // //need to set position beofre display...?
+    void display() {
+        if (media != null) {
+            fadeIn();
+            tint(255, alpha);
+            pushMatrix();
+            imageMode(CENTER);
+            rotate(radians(angle));
+            image(media, x, y, 100, 100); // Display image
+            imageMode(CORNER);
+            popMatrix();
+            noTint();
+            
+        }
+    }
+
+    void wiggle() {
+        this.angle = amplitude * sin(frameCount * speed);
+    }
+
+    PImage getMedia() {
+        return this.media;
+    }
+
+    void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    float getPositionX() {
+        return this.x;
+    }
+
+    float getPositionY() {
+        return this.y;
+    }
+
+    void updateRotatePosition(float x, float y) {
+        this.x = x;
+        this.y = y;  
+    }
+
+    // void remove() {
+    //     if (media != null) {
+    //         // fadeOut();
+    //         // tint(255, alpha);
+    //         image(media, x, y, 100, 100); // Display image
+    //         noTint();
+    //     }
+
+    //     //after fadeout completes stop referencing it in draw()
+    // }
+
+        // Fade in effect
+    void fadeIn() {
+        if (alpha < 255) {
+            alpha += 2.5; // Adjust speed of fade-in (higher = faster)
+        }
+    } 
+}

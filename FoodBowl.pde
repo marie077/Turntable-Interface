@@ -2,18 +2,20 @@
 class FoodBowl {
     PShape svg;
     float x, y;
+    float angle;
     float direction;
-    float angle = 0; 
     String text;
     boolean selected = false;
+    int diameter = 100;
     ArrayList<UserMedia> mediaArray = new ArrayList<UserMedia>();
     
-    FoodBowl(String text, PShape svgPath, float x, float y, float direction) {
+    FoodBowl(String text, PShape svgPath, float x, float y, float direction, float angle) {
         this.svg = svgPath;
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.text = text;
+        this.angle = angle;
     }
     //display bowl #
     void displayBowlNumber() {
@@ -22,6 +24,27 @@ class FoodBowl {
       text(this.text, x, y); 
     }
     
+    void setCoordinates(float x, float y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    float getX() {
+      return this.x;
+    }
+
+    float getY() {
+      return this.y;
+    }
+
+    void setDegree(float x, float y) {
+      this.angle = angle;
+    }
+
+    float getDegree() {
+      return this.angle;
+    }
+
     //svg temp
     void rotateText() {
       displayCircle();
@@ -36,15 +59,16 @@ class FoodBowl {
 
     void displayCircle() {
         fill(0);
-        ellipse(x, y, 50, 50);
+        ellipse(this.x, this.y, diameter, diameter);
     }
 
     void updateSvg(PShape svgPath) {
         this.svg = svgPath;
     }
 
-    void addMedia(UserMedia media) {
-      mediaArray.add(media);
+    void addMedia(String media, float amplitude) {
+      UserMedia usermedia = new UserMedia(media, amplitude);
+      mediaArray.add(usermedia);
     }
 
     void setSelection(boolean state) {
@@ -52,7 +76,19 @@ class FoodBowl {
     }
 
     boolean isSelected() {
-      return selected;
+      int r = diameter/2; // Click radius for bowl selection
+       // Inverse-rotate the mouse position to match bowl space
+      float mx = mouseX - width / 2;
+      float my = mouseY - height / 2;
+
+      float cosA = cos(-radians(arrowAngle));
+      float sinA = sin(-radians(arrowAngle));
+
+      float rotatedMX = mx * cosA - my * sinA;
+      float rotatedMY = mx * sinA + my * cosA;
+
+      // Now compare with bowl's unrotated (original) coordinates
+      return dist(rotatedMX, rotatedMY, this.x, this.y) < r;
     }
 
     ArrayList<UserMedia> getMediaArray() {
